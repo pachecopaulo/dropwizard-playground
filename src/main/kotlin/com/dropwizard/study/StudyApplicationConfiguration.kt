@@ -1,4 +1,4 @@
-package com.dropwizard.study.config
+package com.dropwizard.study
 
 import io.dropwizard.Configuration
 import io.dropwizard.db.DataSourceFactory

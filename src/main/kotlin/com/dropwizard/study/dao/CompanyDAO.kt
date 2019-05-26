@@ -1,6 +1,6 @@
 package com.dropwizard.study.dao
 
-import com.dropwizard.study.model.company.Company
+import com.dropwizard.study.core.Company
 import io.dropwizard.hibernate.AbstractDAO
 import org.hibernate.SessionFactory
 

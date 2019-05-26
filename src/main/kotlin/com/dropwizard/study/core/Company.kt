@@ -1,4 +1,4 @@
-package com.dropwizard.study.model.todo
+package com.dropwizard.study.core
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -8,16 +8,16 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "TODO_ITEM")
-data class TodoItem(
-    @Column(name = "TITLE", nullable = false)
-    val title: String,
+@Table(name = "company")
+data class Company(
+    @Column(name = "name", nullable = false)
+    val name: String,
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     val description: String?,
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "TODO_ITEM_ID")
+    @Column(name = "id")
     val id: Long = 0
 )
