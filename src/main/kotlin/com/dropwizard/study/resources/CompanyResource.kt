@@ -1,8 +1,8 @@
-package com.dropwizard.study.api.resource
+package com.dropwizard.study.resources
 
 import com.codahale.metrics.annotation.Timed
-import com.dropwizard.study.api.view.CompanyRequest
-import com.dropwizard.study.api.view.toEntity
+import com.dropwizard.study.api.CompanyRequest
+import com.dropwizard.study.api.toEntity
 import com.dropwizard.study.dao.CompanyDAO
 import io.dropwizard.hibernate.UnitOfWork
 import javax.validation.Valid

@@ -1,11 +1,8 @@
-package com.dropwizard.study.config
+package com.dropwizard.study
 
-import com.dropwizard.study.api.resource.CompanyResource
-import com.dropwizard.study.api.resource.TodoItemResource
+import com.dropwizard.study.resources.CompanyResource
 import com.dropwizard.study.dao.CompanyDAO
-import com.dropwizard.study.dao.TodoItemDAO
-import com.dropwizard.study.model.company.Company
-import com.dropwizard.study.model.todo.TodoItem
+import com.dropwizard.study.core.Company
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.dropwizard.Application
 import io.dropwizard.db.DataSourceFactory
@@ -23,10 +20,7 @@ class StudyApplication : Application<StudyApplicationConfiguration>() {
         }
     }
 
-    private val hibernateBundle = object : HibernateBundle<StudyApplicationConfiguration>(
-        TodoItem::class.java,
-        Company::class.java
-    ) {
+    private val hibernateBundle = object : HibernateBundle<StudyApplicationConfiguration>(Company::class.java) {
         override fun getDataSourceFactory(configurationStudy: StudyApplicationConfiguration): DataSourceFactory =
             configurationStudy.database
     }
@@ -47,10 +41,7 @@ class StudyApplication : Application<StudyApplicationConfiguration>() {
 
     override fun run(configurationStudy: StudyApplicationConfiguration, environment: Environment) {
         val companyDAO = CompanyDAO(hibernateBundle.sessionFactory)
-        val todoItemDAO = TodoItemDAO(hibernateBundle.sessionFactory)
-        val todoResource = TodoItemResource(todoItemDAO)
 
-        environment.jersey()!!.register(todoResource)
         environment.jersey().register(CompanyResource(companyDAO))
     }
 }
