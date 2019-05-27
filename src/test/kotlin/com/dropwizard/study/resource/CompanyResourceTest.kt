@@ -29,7 +29,7 @@ class CompanyResourceTest {
         @JvmField
         val RULE = DropwizardAppRule(
             StudyApplication::class.java,
-            configPath,
+            ResourceHelpers.resourceFilePath("config-test.yml"),
             ConfigOverride.config("database.url", "jdbc:h2:", "")
         )
 

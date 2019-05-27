@@ -2,17 +2,15 @@ group 'com.example'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.3.11'
-    ext.dropwizard_version = '1.3.2'
     ext.config_file ='config.yml'
 
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlin_version"
-        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlinVersion"
+        classpath "eu.appsatori:gradle-fatjar-plugin:$fatjarPluginVersion"
     }
 }
 
@@ -32,28 +30,28 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonModuleKotlinVersion"
 
-    compile "io.dropwizard:dropwizard-core:$dropwizard_version"
-    compile "io.dropwizard:dropwizard-hibernate:$dropwizard_version"
-    compile "io.dropwizard:dropwizard-migrations:$dropwizard_version"
+    compile "io.dropwizard:dropwizard-core:$dropWizardVersion"
+    compile "io.dropwizard:dropwizard-hibernate:$dropWizardVersion"
+    compile "io.dropwizard:dropwizard-migrations:$dropWizardVersion"
 
-    runtime 'com.h2database:h2:1.3.148'
+    runtime "com.h2database:h2:$h2EmbeddedDBVersion"
 
     // JAXB included for Java 9+
-    compile 'javax.xml.bind:jaxb-api:2.2.11'
-    compile 'com.sun.xml.bind:jaxb-core:2.2.11'
-    compile 'com.sun.xml.bind:jaxb-impl:2.2.11'
-    compile 'javax.activation:activation:1.1.1'
+    compile "javax.xml.bind:jaxb-api:$jaxbVersion"
+    compile "com.sun.xml.bind:jaxb-core:$jaxbVersion"
+    compile "com.sun.xml.bind:jaxb-impl:$jaxbVersion"
+    compile "javax.activation:activation:$activationVersion"
 
-    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+    compile "org.postgresql:postgresql:$postgresDriverVersion"
 
-    testCompile 'org.junit.jupiter:junit-jupiter:5.4.2'
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-    testCompile "io.dropwizard:dropwizard-testing:$dropwizard_version"
-    testCompile "io.dropwizard:dropwizard-client:$dropwizard_version"
-    testCompile 'org.mockito:mockito-core:2.8.9'
+    testCompile "org.junit.jupiter:junit-jupiter:$junitVersion"
+    testCompile "org.hamcrest:hamcrest-all:$hamcrestVersion"
+    testCompile "io.dropwizard:dropwizard-testing:$dropWizardVersion"
+    testCompile "io.dropwizard:dropwizard-client:$dropWizardVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
 }
 
 fatJar {
