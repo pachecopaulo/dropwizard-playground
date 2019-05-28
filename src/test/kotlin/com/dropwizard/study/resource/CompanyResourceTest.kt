@@ -1,53 +1,64 @@
 package com.dropwizard.study.resource
 
-import com.dropwizard.study.StudyApplication
-import com.dropwizard.study.api.CompanyRequest
-import io.dropwizard.testing.ResourceHelpers
-import io.dropwizard.testing.junit.DropwizardAppRule
-import org.junit.Assert.assertEquals
+import com.dropwizard.study.core.Company
+import com.dropwizard.study.dao.CompanyDAO
+import com.dropwizard.study.resources.CompanyResource
+import javax.ws.rs.core.MediaType.APPLICATION_JSON
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.ClassRule
 import org.junit.Test
-import javax.ws.rs.client.Client
-import javax.ws.rs.client.Entity.entity
-import javax.ws.rs.core.MediaType.APPLICATION_JSON
-import javax.ws.rs.core.Response
-import org.junit.BeforeClass
-import io.dropwizard.client.JerseyClientBuilder
-import io.dropwizard.testing.ConfigOverride
+import io.dropwizard.testing.junit.ResourceTestRule
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers.anyLong
+import javax.ws.rs.client.Entity
 
 @ExtendWith(DropwizardExtensionsSupport::class)
 class CompanyResourceTest {
 
     companion object {
-        private lateinit var baseURL: String
-        private lateinit var wsClient: Client
-        private val configPath = ResourceHelpers.resourceFilePath("config-test.yml")
+        private val companyDAO = mock<CompanyDAO>()
 
         @ClassRule
         @JvmField
-        val RULE = DropwizardAppRule(
-            StudyApplication::class.java,
-            ResourceHelpers.resourceFilePath("config-test.yml"),
-            ConfigOverride.config("database.url", "jdbc:h2:", "")
-        )
+        val wsClient = ResourceTestRule
+            .builder()
+            .addResource(CompanyResource(companyDAO))
+            .build()!!
+    }
 
-        @BeforeClass
-        @JvmStatic
-        fun setup() {
-            baseURL = "http://localhost:${RULE.localPort}"
-            wsClient = JerseyClientBuilder(RULE.environment).build("test client")
-            RULE.newApplication().run("db","migrate", configPath)
-        }
+    @Test
+    fun `find company by id`() {
+        whenever(companyDAO.findById(anyLong())).thenReturn(Company("Sample", "Test"))
+
+        val url = "/v1/company/find/10"
+        val response = wsClient
+            .target(url)
+            .request()
+            .get(Company::class.java)
+
+        assertNotNull(response)
+        assertEquals(response.name, "Sample")
+        assertEquals(response.description, "Test")
+        verify(companyDAO).findById(anyLong())
     }
 
     @Test
     fun `create company`() {
-        val response = wsClient.target("$baseURL/v1/company/create")
+        whenever(companyDAO.create(any())).thenReturn(Company("Sample", "Test"))
+
+        val request = """{"name": "Just a title3","description": "Just a description"}"""
+        val response = wsClient
+            .target("/v1/company/create")
             .request()
-            .post(entity(CompanyRequest("Sample", "Description"), APPLICATION_JSON), Response::class.java)
+            .post(Entity.entity(request, APPLICATION_JSON))
 
         assertEquals(200, response.status)
+        verify(companyDAO).create(any())
     }
 }

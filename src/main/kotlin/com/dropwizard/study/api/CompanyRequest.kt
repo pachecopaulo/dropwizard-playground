@@ -1,14 +1,9 @@
 package com.dropwizard.study.api
 
 import com.dropwizard.study.core.Company
-import com.fasterxml.jackson.annotation.JsonProperty
 
 data class CompanyRequest(
-    @JsonProperty
-    val name: String,
-
-    @JsonProperty
-    val description: String
+    val name: String = "",
+    val description: String? = null
 )
-    fun CompanyRequest.toEntity() =
-        Company(name, description)
+    fun CompanyRequest.toEntity() = Company(name, description)

@@ -52,6 +52,7 @@ dependencies {
     testCompile "io.dropwizard:dropwizard-testing:$dropWizardVersion"
     testCompile "io.dropwizard:dropwizard-client:$dropWizardVersion"
     testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 }
 
 fatJar {
@@ -80,6 +81,12 @@ task dbMigrate(type: JavaExec) {
     main mainClassName
     classpath sourceSets.main.runtimeClasspath
     args 'db', 'migrate', config_file
+}
+
+task dbMigrateTest(type: JavaExec) {
+    main mainClassName
+    classpath sourceSets.main.runtimeClasspath
+    args 'db', 'migrate', 'src/test/resources/config-test.yml'
 }
 
 compileKotlin {

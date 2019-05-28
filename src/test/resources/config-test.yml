@@ -1,8 +1,8 @@
 database:
-  driverClass: org.h2.Driver
-  user: sa
-  password: sa
-  url: jdbc:h2:./target/test-example
+  driverClass: org.postgresql.Driver
+  user: testDevUser
+  password: testDevUserPassword123
+  url: jdbc:postgresql://localhost:5433/testing-db?characterEncoding=utf8
 
 server:
   applicationConnectors:
@@ -11,15 +11,3 @@ server:
   adminConnectors:
     - type: http
       port: 0
-
-# Logging settings.
-#logging:
-#  level: INFO
-#  appenders:
-#    - type: console
-#    - type: file
-#      currentLogFilename: './logs/application.log'
-#      archivedLogFilenamePattern: './logs/application-%d-%i.log.gz'
-#      archive: true
-#      archivedFileCount: 7
-#      maxFileSize: '1MiB'
